@@ -24,11 +24,10 @@ jobs:
       # Step 2: Run the Vale GitHub Action.
       # This action automatically downloads Vale and runs it against your files.
       # It will use the configuration file (.vale.ini) from your repository.
-      - name: Run Vale
-        uses: errata-ai/vale-action@v2
-
       - name: Install Asciidoctor
         run: sudo apt-get install -y asciidoctor
+      - name: Run Vale
+        uses: errata-ai/vale-action@v2
         with:
           # You can specify which files to lint.
           # The default is to lint all files recognized by Vale ('*').
