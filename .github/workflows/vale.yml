@@ -23,21 +23,17 @@ jobs:
 
       # Step 2: Set up Ruby and install Asciidoctor.
       # Vale can use Asciidoctor to accurately parse .adoc files.
-      - name: Set up Ruby for Asciidoctor
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.1' # Or a version compatible with your project
       - name: Install Asciidoctor
-        run: gem install asciidoctor
+        run: sudo apt-get update && sudo apt-get install -y asciidoctor
 
       # Step 3: Run the Vale GitHub Action.
       # This action automatically downloads Vale and runs it against your files.
       # It will use the configuration file (.vale.ini) from your repository.
       - name: Run Vale on AsciiDoc files
-        uses: errata-ai/vale-action@v2
+        uses: errata-ai/vale-action@v2.1.1
         with:
           # Specify that Vale should only lint AsciiDoc files.
-          files: '["*.adoc"]'
+          files: '["**/*.adoc"]'
 
         # The action can post review comments directly on your pull requests.
         # This requires a GITHUB_TOKEN with appropriate permissions.
