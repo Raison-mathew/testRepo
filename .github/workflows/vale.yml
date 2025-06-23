@@ -1,41 +1,31 @@
 # .github/workflows/vale.yml
-name: Check AsciiDoc with Vale
+name: Check AsciiDoc with vale
 
-# This action runs on every push and pull request to the main branch.
-# You can customize this to fit your branching strategy.
 on:
   push:
-    branches:
-      - main
+    paths:
+      - 'posts/**/*.adoc'
   pull_request:
-    branches:
-      - main
-
+    paths:
+      - 'posts/**/*.adoc'
 jobs:
-  prose:
-    name: Runner
-    runs-on: ubuntu-latest # Use the latest Ubuntu runner
-
+  vale:
+    name: Vale Lint Check
+    runs-on: ubuntu-latest
     steps:
-      # Step 1: Check out the repository's code so the action can access it.
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      # Step 2: Set up Ruby and install Asciidoctor.
-      # Vale can use Asciidoctor to accurately parse .adoc files.
       - name: Install Asciidoctor
-        run: sudo apt-get update && sudo apt-get install -y asciidoctor
+        run: sudo apt-get install -y asciidoctor
 
-      # Step 3: Run the Vale GitHub Action.
-      # This action automatically downloads Vale and runs it against your files.
-      # It will use the configuration file (.vale.ini) from your repository.
       - name: Run Vale on AsciiDoc files
-        uses: errata-ai/vale-action@v2.1.1
+        uses: errata-ai/vale-action@v2
         with:
-          # Specify that Vale should only lint AsciiDoc files.
-          files: '["**/*.adoc"]'
-
-        # The action can post review comments directly on your pull requests.
-        # This requires a GITHUB_TOKEN with appropriate permissions.
+          files: posts
+          filter_mode: nofilter
+          vale_flags: "--glob=*.adoc"
+          reporter: github-check
+          fail_on_error: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
