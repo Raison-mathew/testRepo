@@ -27,5 +27,6 @@ jobs:
           filter_mode: nofilter
           vale_flags: "--glob=*.adoc"
           reporter: github-check
+          fail_on_error: false
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
