@@ -22,11 +22,16 @@ jobs:
 
       - name: Run Vale on AsciiDoc files
         uses: errata-ai/vale-action@v2
-        with:
-          files: posts
-          filter_mode: nofilter
-          vale_flags: "--glob=*.adoc"
-          reporter: github-check
-          fail_on_error: false
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Run Vale on .adoc files
+        run: |
+          mkdir -p vale-results
+          vale --output=JSON --glob='*.adoc' > vale-results/vale-output.json 
+
+      - name: Upload Vale output as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vale-results
+          path: vale-results/vale-output.json    
