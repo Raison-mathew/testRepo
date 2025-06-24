@@ -2,6 +2,7 @@
 name: Check AsciiDoc with vale
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'posts/**/*.adoc'
