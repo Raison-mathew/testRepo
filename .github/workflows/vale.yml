@@ -20,18 +20,11 @@ jobs:
       - name: Install Asciidoctor
         run: sudo apt-get install -y asciidoctor
 
-      - name: Install Vale
-        run: |
-          curl -fsSL https://github.com/errata-ai/vale/releases/latest/download/vale_Linux_64-bit.tar.gz | tar -xz
-          sudo mv vale /usr/local/bin
-
-      - name: Run Vale on .adoc files
-        run: |
-          mkdir -p vale-results
-          vale --output=JSON --glob='*.adoc' > vale-results/vale-output.json 
-
-      - name: Upload Vale output as artifact
-        uses: actions/upload-artifact@v4
+      - name: Run Vale on AsciiDoc files
+        uses: errata-ai/vale-action@v2.1.1
         with:
-          name: vale-results
-          path: vale-results/vale-output.json    
+          files: posts/test.adoc
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      
